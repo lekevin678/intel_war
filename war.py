@@ -27,7 +27,7 @@ class Player():
         self.name = name
         self.cards = deck
 
-    def reveal(self, is_war):
+    def reveal(self):
         return self.cards.pop()
 
     def take(self, cards):
