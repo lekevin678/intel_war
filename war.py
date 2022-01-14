@@ -27,8 +27,14 @@ class Player():
         self.name = name
         self.cards = deck
 
-    def reveal(self):
-        return self.cards.pop()
+    def reveal(self, is_war):
+        if is_war:
+            cards = []
+            for _ in range(3):
+                cards.append(self.cards.pop())
+            return cards
+        else:
+            return self.cards.pop()
 
     def take(self, active_cards):
         self.cards = active_cards + self.cards
@@ -48,24 +54,70 @@ class WarGame():
     def get_value(self, card):
         return self.deck.nums.index(card[0])
 
-    def battle(self):
-        active_cards = []
-        player_card = self.player.reveal()
-        hal_card = self.hal.reveal()
+    def enough_cards(self, cards, is_war):
+        if not is_war and len(cards) > 0:
+            return True
+        elif is_war and len(cards) >= 3:
+            return True
+        else:
+            return False
+
+    def battle(self, active_cards):
+        print(f"{self.player.name} has {len(self.player.cards)} cards.", end='')
+        print(f"\t {self.hal.name} has {len(self.hal.cards)} cards.")
+
+        if self.enough_cards(self.player.cards, is_war=False):
+            player_card = self.player.reveal(is_war=False)
+        else:
+            print(f"{self.player.name} ran out of cards.")
+            return False
+        if self.enough_cards(self.hal.cards, is_war=False):
+            hal_card = self.hal.reveal(is_war=False)
+        else:
+            print(f"{self.hal.name} ran out of cards.")
+            return False
+
+        print("Cards on Board +2")
         active_cards += [player_card, hal_card]
 
         if self.get_value(player_card) > self.get_value(hal_card):
+            print(f"{self.player.name} wins this battle.")
             self.player.take(active_cards)
+            return True
         elif self.get_value(player_card) < self.get_value(hal_card):
+            print(f"{self.hal.name} wins this battle.")
             self.hal.take(active_cards)
+            return True
         else:
-            print("WAR")
+            print("WAR!")
+            if self.enough_cards(self.player.cards, is_war=True):
+                player_cards = self.player.reveal(is_war=True)
+            else:
+                print(f"{self.player.name} ran out of cards for war.")
+                return False
+            if self.enough_cards(self.hal.cards, is_war=True):
+                hal_cards = self.hal.reveal(is_war=True)
+            else:
+                print(f"{self.hal.name} ran out of cards for war.")
+                return False
+
+            print("Cards on Board +6")
+            active_cards += player_cards + hal_cards
+            return True and self.battle(active_cards)
 
     def main_loop(self):
+        round_count = 1
         while len(self.player.cards) > 0 and len(self.hal.cards) > 0:
-            print(f"Player has {len(self.player.cards)} cards.")
-            print(f"HAL has {len(self.hal.cards)} cards.")
-            self.battle()
+            print(f"/////////////////////////////////////////////////////////////")
+            print(f"ROUND {round_count}")
+            print(f"/////////////////////////////////////////////////////////////")
+            active_cards = []
+            continue_game = self.battle(active_cards)
+            if not continue_game:
+                break
+            round_count += 1
+
+        print("GAME OVER")
 
 
 def start_game():
