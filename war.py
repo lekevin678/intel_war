@@ -38,6 +38,7 @@ class Player():
 
     def take(self, active_cards):
         self.cards = active_cards + self.cards
+        active_cards.clear()
 
 
 class WarGame():
@@ -79,13 +80,24 @@ class WarGame():
         if self.get_value(player_card) > self.get_value(hal_card):
             self.player.take(active_cards)
             print(f"{self.player.name} wins this battle: +{len(active_cards)}")
-            return self.player
+            return active_cards
         elif self.get_value(player_card) < self.get_value(hal_card):
             self.hal.take(active_cards)
             print(f"{self.hal.name} wins this battle: +{len(active_cards)}")
-            return self.hal
+            return active_cards
         else:
-            return "war"
+            print("WAR!")
+            print(
+                f"{self.player.name} has {len(self.player.cards)} cards.".ljust(30), end='')
+            print(f"{self.hal.name} has {len(self.hal.cards)} cards.".ljust(30))
+
+            player_cards, hal_cards = self.reveal_cards(is_war=True)
+            if player_cards is None or hal_cards is None:
+                return None
+            else:
+                print(f"{self.player.name} -3.".ljust(30), end='')
+                print(f"{self.hal.name} -3".ljust(30))
+                return active_cards + player_cards + hal_cards
 
     def battle(self, active_cards):
         print(
@@ -101,27 +113,16 @@ class WarGame():
 
         print(f"{self.player.name} -1.".ljust(30), end='')
         print(f"{self.hal.name} -1".ljust(30))
-        print("Cards on Board +2")
+        print(f"Cards on Board {len(active_cards)}")
         print(
             f"{self.player.name}: {player_card[0]}-{player_card[1]}\tvs.\t{self.hal.name}: {hal_card[0]}-{hal_card[1]}")
 
-        battle_result = self.get_battle_results(
+        active_cards = self.get_battle_results(
             player_card, hal_card, active_cards)
-
-        if battle_result == "war":
-            print("WAR!")
-            print(
-                f"{self.player.name} has {len(self.player.cards)} cards.".ljust(30), end='')
-            print(f"{self.hal.name} has {len(self.hal.cards)} cards.".ljust(30))
-
-            player_cards, hal_cards = self.reveal_cards(is_war=True)
-            if player_cards is None or hal_cards is None:
-                return False
-            active_cards += player_cards + hal_cards
-
-            print(f"{self.player.name} -3.".ljust(30), end='')
-            print(f"{self.hal.name} -3".ljust(30))
-            print("Cards on Board +6")
+        if active_cards == None:
+            return False
+        elif active_cards:
+            print(f"Cards on Board {len(active_cards)}")
             return True and self.battle(active_cards)
         else:
             return True
@@ -158,4 +159,3 @@ def main_menu():
 
 if __name__ == '__main__':
     main_menu()
-    
