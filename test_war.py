@@ -188,7 +188,7 @@ class TestWar(unittest.TestCase):
         hal_cards = [('9', 'S'), ('2', 'D'), ('2', 'H'),
                      ('3', 'D'), ('3', 'H')]
         game1 = WarGame("unittest", deck, player_cards, hal_cards)
-        self.assertTrue(game1.battle([]))
+        self.assertFalse(game1.battle([]))
 
         # War 2X
         player_cards = [('J', 'S'), ('4', 'S'), ('4', 'C'), ('5', 'S'), ('10', 'S'),
@@ -196,7 +196,7 @@ class TestWar(unittest.TestCase):
         hal_cards = [('7', 'S'), ('4', 'D'), ('4', 'H'), ('5', 'D'), ('10', 'C'),
                      ('2', 'D'), ('2', 'H'), ('3', 'D'), ('3', 'H')]
         game1 = WarGame("unittest", deck, player_cards, hal_cards)
-        self.assertTrue(game1.battle([]))
+        self.assertFalse(game1.battle([]))
 
         # War 2X, HAL not enough cards
         player_cards = [('7', 'S'), ('4', 'S'), ('4', 'C'), ('5', 'S'), ('10', 'S'),

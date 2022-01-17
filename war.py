@@ -206,7 +206,7 @@ class WarGame():
             f"{self.player.name} has {len(self.player.cards)} cards.".ljust(30), end='')
         print(f"{self.hal.name} has {len(self.hal.cards)} cards.".ljust(30))
 
-        input("Press ENTER to reveal cards.")
+        # input("Press ENTER to reveal cards.")
         player_card, hal_card = self.reveal_cards(is_war=False)
         if player_card is None or hal_card is None:
             return False
@@ -219,6 +219,7 @@ class WarGame():
         print(
             f"{self.player.name}: {player_card[0]}-{player_card[1]}\tvs.\t{self.hal.name}: {hal_card[0]}-{hal_card[1]}")
         print("*************************************************************\n")
+
         active_cards = self.get_battle_results(
             player_card, hal_card, active_cards)
         if active_cards == None:
@@ -236,7 +237,7 @@ class WarGame():
         round_count = 1
         continue_game = True
         while continue_game is True:
-            input("Press ENTER to begin round.")
+            # input("Press ENTER to begin round.")
             print(f"\n/////////////////////////////////////////////////////////////")
             print(f"ROUND {round_count}")
             print(f"/////////////////////////////////////////////////////////////\n")
