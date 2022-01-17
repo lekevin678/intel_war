@@ -27,3 +27,4 @@ battle
             |___battle
 ``` 
 ## If I Had More Time
+If I had more time, I would add an option to let the user play again if they would like.
