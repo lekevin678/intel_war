@@ -205,9 +205,8 @@ class WarGame():
         print(
             f"{self.player.name} has {len(self.player.cards)} cards.".ljust(30), end='')
         print(f"{self.hal.name} has {len(self.hal.cards)} cards.".ljust(30))
-        if active_cards:
-            print(f"There are {len(active_cards)} cards on the board.")
 
+        input("Press ENTER to reveal cards.")
         player_card, hal_card = self.reveal_cards(is_war=False)
         if player_card is None or hal_card is None:
             return False
@@ -215,16 +214,17 @@ class WarGame():
 
         print(f"{self.player.name} -1.".ljust(30), end='')
         print(f"{self.hal.name} -1".ljust(30))
-        print(f"Cards on Board {len(active_cards)}")
+        print(f"Cards on Board: {len(active_cards)}")
+        print("\n*************************************************************")
         print(
             f"{self.player.name}: {player_card[0]}-{player_card[1]}\tvs.\t{self.hal.name}: {hal_card[0]}-{hal_card[1]}")
-
+        print("*************************************************************\n")
         active_cards = self.get_battle_results(
             player_card, hal_card, active_cards)
         if active_cards == None:
             return False
         elif active_cards:
-            print(f"Cards on Board {len(active_cards)}")
+            print(f"Cards on Board: {len(active_cards)}")
             return True and self.battle(active_cards)
         elif len(self.player.cards) == 0 or len(self.hal.cards) == 0:
             return False
@@ -236,9 +236,10 @@ class WarGame():
         round_count = 1
         continue_game = True
         while continue_game is True:
-            print(f"/////////////////////////////////////////////////////////////")
+            input("Press ENTER to begin round.")
+            print(f"\n/////////////////////////////////////////////////////////////")
             print(f"ROUND {round_count}")
-            print(f"/////////////////////////////////////////////////////////////")
+            print(f"/////////////////////////////////////////////////////////////\n")
             active_cards = []
             continue_game = self.battle(active_cards)
             round_count += 1
